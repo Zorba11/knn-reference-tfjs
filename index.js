@@ -33,10 +33,16 @@ let { features, labels, testFeatures, testLabels } = loadCSV(
 features = tf.tensor(features);
 labels = tf.tensor(labels);
 
-const result = knn(features, labels, tf.tensor(testFeatures[0]), 10);
+testFeatures.forEach((testPoint, i) => {
+  const result = knn(features, labels, tf.tensor(testPoint), 10);
 
-const err = (testLabels[0][0] - result) / testLabels[0][0];
+  // testLabels[i][0] -> is the testLabel (or price) for the corresponding testPoint (or lat|long)
+  console.log(testPoint);
+  console.log('testLabel..', testLabels, i, testLabels[i][0]);
 
-console.log('Guess', result, testLabels[0][0]);
+  const err = (testLabels[i][0] - result) / testLabels[i][0];
 
-console.log('Error', err * 100); // -31 % accurate
+  console.log('Guess', result, testLabels[i][0]);
+
+  console.log('Error', err * 100);
+});
